@@ -60,7 +60,7 @@ export default function AddFacilityPage() {
     };
 
     try {
-      const response = await fetch("https://shortnest-server-backend.vercel.app//api/facilities", {
+      const response = await fetch("https://shortnest-server-backend.vercel.app/api/facilities", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
