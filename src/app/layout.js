@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="flex flex-col min-h-screen bg-gray-50 text-gray-900">
         <AuthProvider>
-          {/* 🟢 এখানে আপনার ক্লায়েন্ট আইডিটি বসাতে হবে */}
+          
           <GoogleOAuthProvider clientId="893430209928-a5g8umoq1hnc4euk2elfsf8qeg9dbsoa.apps.googleusercontent.com">
             <Navbar />
             <main className="flex-grow">
