@@ -49,48 +49,46 @@ export default function Navbar() {
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
-          
+         
           <div className="flex items-center">
             <BrandLogo />
           </div>
 
           
-          <div className="flex items-center space-x-2 md:space-x-3">
+          <div className="flex items-center space-x-3">
+            
             
             <Link 
               href="/" 
-              className="hidden md:block px-4 py-2 rounded-full text-gray-700 font-medium hover:bg-gray-100 hover:text-blue-600 transition-all duration-300"
+              className="hidden md:block px-5 py-2 text-sm font-semibold text-gray-700 bg-gray-50 border border-gray-200 rounded-full hover:bg-gray-800 hover:text-white hover:shadow-md transition-all duration-300"
             >
               Home
             </Link>
             
             <Link 
               href="/facilities" 
-              className="px-4 py-2 rounded-full text-gray-700 font-medium hover:bg-gray-100 hover:text-blue-600 transition-all duration-300"
+              className="hidden sm:block px-5 py-2 text-sm font-semibold text-gray-700 bg-gray-50 border border-gray-200 rounded-full hover:bg-gray-800 hover:text-white hover:shadow-md transition-all duration-300"
             >
               Facilities
             </Link>
             
             
             {user && (
-              <div className="hidden lg:flex items-center space-x-3 mr-3 border-r border-gray-200 pr-5">
+              <div className="hidden lg:flex items-center space-x-3 ml-2 border-l border-gray-200 pl-4">
                 <Link 
                   href="/my-bookings" 
-                  
                   className="px-5 py-2 text-sm font-semibold text-blue-600 bg-blue-50 border border-blue-100 rounded-full hover:bg-blue-600 hover:text-white hover:shadow-md transition-all duration-300"
                 >
                   My Bookings
                 </Link>
                 <Link 
                   href="/add-facility" 
-                  
                   className="px-5 py-2 text-sm font-semibold text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-full hover:bg-emerald-600 hover:text-white hover:shadow-md transition-all duration-300"
                 >
                   + Add Facility
                 </Link>
                 <Link 
                   href="/manage-facilities" 
-                 
                   className="px-5 py-2 text-sm font-semibold text-purple-600 bg-purple-50 border border-purple-100 rounded-full hover:bg-purple-600 hover:text-white hover:shadow-md transition-all duration-300"
                 >
                   Manage Facilities
@@ -98,9 +96,9 @@ export default function Navbar() {
               </div>
             )}
             
-            
+          
             {user ? (
-              <div className="relative pl-2" ref={dropdownRef}>
+              <div className="relative pl-3" ref={dropdownRef}>
                 <button 
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center gap-2 bg-white border border-gray-200 text-gray-800 px-2 py-1.5 rounded-full hover:border-blue-400 hover:shadow-sm transition-all"
@@ -114,7 +112,7 @@ export default function Navbar() {
                     {user?.name ? user.name.split(" ")[0] : "User"}
                   </span>
                   
-                  
+                 
                   <svg className={`w-4 h-4 text-gray-500 transition-transform duration-300 hidden sm:block mr-1 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                   </svg>
@@ -130,6 +128,9 @@ export default function Navbar() {
                     
                     
                     <div className="lg:hidden">
+                     
+                      <Link href="/facilities" onClick={() => setIsDropdownOpen(false)} className="block sm:hidden px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">Facilities</Link>
+                      
                       <Link href="/my-bookings" onClick={() => setIsDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">My Bookings</Link>
                       <Link href="/add-facility" onClick={() => setIsDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">Add Facility</Link>
                       <Link href="/manage-facilities" onClick={() => setIsDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">Manage Facilities</Link>
