@@ -56,7 +56,25 @@ export function AuthProvider({ children }) {
     }
   };
 
- 
+  const register = async (userData) => {
+    setLoading(true);
+    try {
+      const response = await fetch("https://shortnest-server-backend.vercel.app/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+        credentials: "include",
+      });
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Register error:", error);
+      return { success: false, message: "Server error occurred." };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const googleLogin = async (googleUserData) => {
     setLoading(true);
     try {
@@ -93,8 +111,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    
-    <AuthContext.Provider value={{ user, loading, login, googleLogin, logout, setUser }}>
+    <AuthContext.Provider value={{ user, loading, login, register, googleLogin, logout, setUser }}>
       {!loading && children}
     </AuthContext.Provider>
   );
