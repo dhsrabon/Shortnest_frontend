@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkUserSession = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/auth/me", {
+        const response = await fetch("https://shortnest-server-backend.vercel.app/api/auth/me", {
           credentials: "include",
         });
         
@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
   const login = async (credentials) => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch("https://shortnest-server-backend.vercel.app/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
@@ -60,7 +60,7 @@ export function AuthProvider({ children }) {
   const googleLogin = async (googleUserData) => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/auth/google", {
+      const response = await fetch("https://shortnest-server-backend.vercel.app/api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(googleUserData),
@@ -82,7 +82,7 @@ export function AuthProvider({ children }) {
   
   const logout = async () => {
     try {
-      await fetch("http://localhost:5000/api/auth/logout", {
+      await fetch("https://shortnest-server-backend.vercel.app/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });

@@ -11,7 +11,7 @@ export default function FeaturedFacilities() {
   useEffect(() => {
     const fetchFacilities = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/facilities");
+        const response = await fetch("https://shortnest-server-backend.vercel.app/api/facilities");
         const result = await response.json();
         
         if (result.success && result.data) {
