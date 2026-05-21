@@ -9,20 +9,20 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function AuthPage() {
   const { login, register, googleLogin } = useAuth(); 
   
-  // 🟢 Toggle State: Login or Register
+  
   const [isLoginView, setIsLoginView] = useState(true);
   
-  // States
+  
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [registerData, setRegisterData] = useState({ name: "", email: "", password: "", confirmPassword: "" });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
 
-  // Handlers
+ 
   const handleLoginChange = (e) => setLoginData({ ...loginData, [e.target.name]: e.target.value });
   const handleRegisterChange = (e) => setRegisterData({ ...registerData, [e.target.name]: e.target.value });
 
-  // Login Submit
+  
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -43,10 +43,28 @@ export default function AuthPage() {
     }
   };
 
-  // Register Submit
+  
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    if (registerData.password !== registerData.confirmPassword) {
+    
+    const { password, confirmPassword, name, email } = registerData;
+
+    
+    const minLength = /.{6,}/;
+    const hasUppercase = /[A-Z]/;
+    const hasLowercase = /[a-z]/;
+
+    if (!minLength.test(password)) {
+      return setMessage({ type: "error", text: "❌ Password must be at least 6 characters long." });
+    }
+    if (!hasUppercase.test(password)) {
+      return setMessage({ type: "error", text: "❌ Password must contain at least one uppercase letter." });
+    }
+    if (!hasLowercase.test(password)) {
+      return setMessage({ type: "error", text: "❌ Password must contain at least one lowercase letter." });
+    }
+
+    if (password !== confirmPassword) {
       return setMessage({ type: "error", text: "❌ Passwords do not match!" });
     }
 
@@ -55,16 +73,16 @@ export default function AuthPage() {
 
     try {
       const result = await register({ 
-        name: registerData.name, 
-        email: registerData.email, 
-        password: registerData.password,
+        name: name, 
+        email: email, 
+        password: password,
         photo: "https://cdn-icons-png.flaticon.com/512/149/149071.png"
       });
       
       if (result.success) {
         setMessage({ type: "success", text: "✅ Registration successful! Please login." });
         setRegisterData({ name: "", email: "", password: "", confirmPassword: "" });
-        setIsLoginView(true); // রেজিস্ট্রেশন হলে অটো লগইন ট্যাবে নিয়ে যাবে
+        setTimeout(() => setIsLoginView(true), 1500); 
       } else {
         setMessage({ type: "error", text: `❌ ${result.message || "Failed to register"}` });
       }
@@ -107,19 +125,13 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen w-full flex bg-[#0f172a] font-sans">
       
-      {/* =========================================
-          🟢 LEFT SIDE: PICTURE AREA
-      ========================================= */}
+   
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-black">
-        {/* আপনার পছন্দের ফুটবল/স্টেডিয়ামের ছবি */}
         <div 
-  className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 hover:scale-105"
-  style={{ backgroundImage: "url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=2000&auto=format&fit=crop')" }}
-></div>
-        
-        {/* ডার্ক গ্রেডিয়েন্ট ওভারলে যাতে লেখা ফুটে ওঠে */}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 hover:scale-105"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=2000&auto=format&fit=crop')" }}
+        ></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/40 to-transparent"></div>
-        
         <div className="absolute bottom-16 left-16 z-10">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -136,12 +148,10 @@ export default function AuthPage() {
         </div>
       </div>
 
-      {/* =========================================
-          🟢 RIGHT SIDE: LOGIN / REGISTER AREA
-      ========================================= */}
+      
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative overflow-y-auto">
         
-        {/* গ্লোবাল মেসেজ অ্যালার্ট */}
+      
         <AnimatePresence>
           {message.text && (
             <motion.div 
@@ -155,7 +165,7 @@ export default function AuthPage() {
 
         <div className="w-full max-w-[440px] bg-[#1e293b]/50 backdrop-blur-md p-8 sm:p-10 rounded-3xl border border-gray-700/50 shadow-2xl">
           
-          {/* 🟢 Tabs (Toggle between Login & Register) */}
+         
           <div className="flex items-center justify-between mb-8 border-b border-gray-700 pb-4">
             <button 
               onClick={() => { setIsLoginView(true); setMessage({ type: "", text: "" }); }}
@@ -164,7 +174,6 @@ export default function AuthPage() {
               Sign In
               {isLoginView && <motion.div layoutId="underline" className="h-1 bg-blue-500 mt-4 rounded-t-md"></motion.div>}
             </button>
-            
             <button 
               onClick={() => { setIsLoginView(false); setMessage({ type: "", text: "" }); }}
               className={`text-xl font-bold transition-colors ${!isLoginView ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
@@ -176,7 +185,6 @@ export default function AuthPage() {
 
           <AnimatePresence mode="wait">
             
-            {/* 🟦 LOGIN FORM */}
             {isLoginView ? (
               <motion.form 
                 key="login" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} transition={{ duration: 0.3 }}
@@ -187,10 +195,7 @@ export default function AuthPage() {
                   <input type="email" name="email" required value={loginData.email} onChange={handleLoginChange} className="w-full px-5 py-3.5 bg-[#0f172a] border border-gray-700 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white placeholder-gray-600 outline-none transition-all" placeholder="player@example.com" />
                 </div>
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="block text-sm font-medium text-gray-400">Password</label>
-                    <a href="#" className="text-xs text-blue-500 hover:text-blue-400">Forgot?</a>
-                  </div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">Password</label>
                   <input type="password" name="password" required value={loginData.password} onChange={handleLoginChange} className="w-full px-5 py-3.5 bg-[#0f172a] border border-gray-700 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white placeholder-gray-600 outline-none transition-all" placeholder="••••••••" />
                 </div>
                 <button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:shadow-[0_0_25px_rgba(37,99,235,0.5)] mt-2">
@@ -198,8 +203,7 @@ export default function AuthPage() {
                 </button>
               </motion.form>
             ) : 
-            
-            /* 🟥 REGISTER FORM */
+           
             (
               <motion.form 
                 key="register" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }}
@@ -228,7 +232,7 @@ export default function AuthPage() {
             )}
           </AnimatePresence>
 
-          {/* 🟢 Social Login Area (Fixed at bottom) */}
+         
           <div className="mt-8 pt-6 border-t border-gray-700/50">
             <button
               type="button"
