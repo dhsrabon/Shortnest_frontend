@@ -40,7 +40,7 @@ export default function FacilityDetailsPage() {
     const fetchSingleFacility = async () => {
       try {
         // পরিবর্তন ১: 3000 এর বদলে 5000 দেওয়া হয়েছে
-        const response = await fetch(`http://localhost:5000/api/facilities/${id}`);
+        const response = await fetch(`https://shortnest-server-backend.vercel.app/api/facilities/${id}`);
 
         if (response.ok) {
           const result = await response.json();
@@ -116,7 +116,7 @@ export default function FacilityDetailsPage() {
 
     try {
       // পরিবর্তন ২: /api/bookings এর বদলে সম্পূর্ণ ব্যাকএন্ড লিংক দেওয়া হয়েছে
-      const response = await fetch("http://localhost:5000/api/bookings", {
+      const response = await fetch("https://shortnest-server-backend.vercel.app/api/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

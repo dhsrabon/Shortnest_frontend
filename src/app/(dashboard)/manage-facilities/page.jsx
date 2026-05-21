@@ -14,7 +14,7 @@ export default function ManageFacilitiesPage() {
 
     const fetchMyFacilities = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/facilities/owner/${user.email}`);
+        const response = await fetch(`https://shortnest-server-backend.vercel.app/api/facilities/owner/${user.email}`);
         const result = await response.json();
         
         if (result.success) {
@@ -34,7 +34,7 @@ export default function ManageFacilitiesPage() {
   const handleDelete = async (id) => {
     if (confirm("Are you sure you want to delete this facility? This action cannot be undone.")) {
       try {
-        const response = await fetch(`http://localhost:5000/api/facilities/${id}`, {
+        const response = await fetch(`https://shortnest-server-backend.vercel.app/api/facilities/${id}`, {
           method: "DELETE",
         });
         const result = await response.json();

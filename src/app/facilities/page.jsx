@@ -17,7 +17,7 @@ export default function AllFacilitiesPage() {
       setLoading(true);
       try {
         
-        const response = await fetch(`http://localhost:5000/api/facilities?search=${encodeURIComponent(searchTerm)}&type=${encodeURIComponent(filterType)}`, {
+        const response = await fetch(`https://shortnest-server-backend.vercel.app/api/facilities?search=${encodeURIComponent(searchTerm)}&type=${encodeURIComponent(filterType)}`, {
           cache: "no-store",
         });
         const result = await response.json();

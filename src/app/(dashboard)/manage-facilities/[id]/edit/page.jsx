@@ -29,7 +29,7 @@ export default function EditFacilityPage() {
 
     const fetchFacility = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/facilities/${facilityId}`);
+        const response = await fetch(`https://shortnest-server-backend.vercel.app/api/facilities/${facilityId}`);
         const result = await response.json();
         if (result.success && result.data) {
           const facility = result.data;
@@ -74,7 +74,7 @@ export default function EditFacilityPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/facilities/${facilityId}`, {
+      const response = await fetch(`https://shortnest-server-backend.vercel.app/api/facilities/${facilityId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
