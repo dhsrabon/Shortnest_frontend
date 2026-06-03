@@ -1,22 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 import { useGoogleLogin } from '@react-oauth/google'; 
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function AuthPage() {
-  const { login, register, googleLogin } = useAuth(); 
+  const router = useRouter();
+  const { login, register, googleLogin, user } = useAuth(); 
   
   
   const [isLoginView, setIsLoginView] = useState(true);
-  
-  
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [registerData, setRegisterData] = useState({ name: "", email: "", password: "", confirmPassword: "" });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
+
+  // Navigate to home after successful login
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
  
   const handleLoginChange = (e) => setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -31,14 +38,13 @@ export default function AuthPage() {
     try {
       const result = await login(loginData);
       if (result.success || result.user || result.token) {
-        setMessage({ type: "success", text: "✅ Login successful! Redirecting..." });
-        setTimeout(() => window.location.href = "/", 1000);
+        setMessage({ type: "success", text: "✅ Login successful!" });
       } else {
         setMessage({ type: "error", text: `❌ ${result.message || "Invalid credentials"}` });
+        setLoading(false);
       }
     } catch (error) {
       setMessage({ type: "error", text: "❌ Server error occurred." });
-    } finally {
       setLoading(false);
     }
   };
@@ -109,9 +115,9 @@ export default function AuthPage() {
 
         if (backendResponse.success || backendResponse.user || backendResponse.token) {
           setMessage({ type: "success", text: "✅ Google Login successful!" });
-          setTimeout(() => window.location.href = "/", 1000);
         } else {
           setMessage({ type: "error", text: `❌ ${backendResponse.message || "Failed to login"}` });
+          setLoading(false);
         }
       } catch (error) {
         setMessage({ type: "error", text: "❌ Failed to fetch Google profile." });
