@@ -74,6 +74,8 @@ export default function FacilityDetailsPage() {
     );
   }
 
+  const { user } = useAuth();
+
   if (!facility) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
@@ -84,9 +86,7 @@ export default function FacilityDetailsPage() {
   }
 
   const totalPrice = facility.price_per_hour * hours;
-
-  // বুকিং ফর্ম সাবমিট হ্যান্ডলার (API Call)
-  const { user } = useAuth();
+  const googleMapUrl = `https://www.google.com/maps?q=${encodeURIComponent(facility.location)}&output=embed`;
 
   const handleBooking = async (e) => {
     e.preventDefault();
@@ -115,7 +115,6 @@ export default function FacilityDetailsPage() {
     };
 
     try {
-      // পরিবর্তন ২: /api/bookings এর বদলে সম্পূর্ণ ব্যাকএন্ড লিংক দেওয়া হয়েছে
       const response = await fetch("https://shortnest-server-backend.vercel.app/api/bookings", {
         method: "POST",
         headers: {
@@ -164,9 +163,22 @@ export default function FacilityDetailsPage() {
               </div>
               
               <div className="space-y-3 text-gray-600 mb-6">
-                <p className="flex items-center">
-                  <span className="font-semibold w-24 text-gray-800">Location:</span> {facility.location}
-                </p>
+                <div>
+                  <span className="font-semibold text-gray-800">Location:</span>
+                  <p className="text-sm text-gray-600 mt-1">{facility.location}</p>
+                </div>
+                <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm mt-4">
+                  <iframe
+                    title="Facility location map"
+                    src={googleMapUrl}
+                    width="100%"
+                    height="280"
+                    className="border-0"
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
                 <p className="flex items-center">
                   <span className="font-semibold w-24 text-gray-800">Capacity:</span> {facility.capacity}
                 </p>

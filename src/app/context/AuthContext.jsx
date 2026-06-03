@@ -118,14 +118,14 @@ export function AuthProvider({ children }) {
 }
 
 export function useRequireAuth() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (user === null) {
+    if (!loading && user === null) {
       router.push("/login");
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
   return user;
 }
